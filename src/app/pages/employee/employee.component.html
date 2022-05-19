@@ -1,0 +1,101 @@
+<h2 class="content-block">근무자 목록</h2>
+
+<div class="container">
+  <div class="crud-buttons">
+    <dx-text-box [(value)]="searchName" class="search-bar" placeholder="검색">
+    </dx-text-box>
+    <dx-button
+      class="crud-button"
+      text="조회"
+      (onClick)="search()"
+    ></dx-button>
+    <dx-button
+      class="crud-button"
+      text="생성"
+      (onClick)="create()"
+    ></dx-button>
+    <dx-button
+      class="crud-button"
+      text="변경"
+      (onClick)="update()"
+    ></dx-button>
+    <dx-button
+      class="crud-button"
+      text="삭제"
+      (onClick)="delete()"
+    ></dx-button>
+  </div>
+
+  <dx-data-grid
+    #grid
+    [dataSource]="employees"
+    [showBorders]="true"
+    [remoteOperations]="true"
+    [hoverStateEnabled]="true"
+    [selectedRowKeys]="[]"
+  >
+    <dxi-column dataField="id" dataType="number" caption="ID"></dxi-column>
+    <dxi-column dataField="name" dataType="string" caption="이름"></dxi-column>
+    <dxi-column dataField="gender" dataType="string" caption="성별" [customizeText]="displayGender"></dxi-column>
+    <dxi-column dataField="birthDate" dataType="date" caption="생년월일" [format]="{ type: 'yyyy/MM/dd' }"></dxi-column>
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager
+      [showPageSizeSelector]="true"
+      [allowedPageSizes]="[5, 10, 20]"
+    ></dxo-pager>
+  </dx-data-grid>
+</div>
+
+<dx-popup
+  [width]="500"
+  [height]="280"
+  [showTitle]="true"
+  [title]="isCreateMode() ? '근무자 생성' : '근무자 변경'"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [showCloseButton]="false"
+  container=".dx-viewport"
+  [(visible)]="popupVisible"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="before"
+    [options]="{text: '저장', onClick: save}"
+  >
+  </dxi-toolbar-item>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="before"
+    [options]="{text: '취소', onClick: cancel}"
+  >
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <dx-form id="form" [colCount]="2" [formData]="employee">
+      <dxi-item *ngIf="isUpdateMode()"
+        dataField="id"
+        [label]="{ text: 'ID' }"
+        [editorOptions]="{ disabled: true }"
+      ></dxi-item>
+      <dxi-item
+        dataField="name"
+        [label]="{ text: '이름' }"
+        [editorOptions]="{ }"
+      ></dxi-item>
+      <dxi-item
+        dataField="gender"
+        [label]="{ text: '성별' }"
+        editorType="dxSelectBox"
+        [editorOptions]="{ items: genders, searchEnabled: true, valueExpr: 'code', displayExpr: 'text' }"
+      ></dxi-item>
+      <dxi-item
+        dataField="birthDate"
+        [label]="{ text: '생년월일' }"
+        editorType="dxDateBox"
+        [editorOptions]="{ displayFormat: 'yyyy/MM/dd' }"
+      ></dxi-item>
+    </dx-form>
+  </div>
+</dx-popup>
