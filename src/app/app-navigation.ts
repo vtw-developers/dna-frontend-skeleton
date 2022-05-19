@@ -15,6 +15,10 @@ export const navigation = [
       {
         text: 'Tasks',
         path: '/tasks'
+      },
+      {
+        text: '근무자 관리',
+        path: '/employee'
       }
     ]
   }
