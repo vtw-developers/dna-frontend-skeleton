@@ -68,7 +68,7 @@ export class EmployeeEditComponent {
       this.employeeService.create(this.employee).subscribe({
         next: (v) => {
           notify('직원 생성이 성공적으로 완료되었습니다.', 'success', 3000);
-          this.onSaved.emit(this.employee);
+          this.onSaved.emit(v);
         },
         error: (e) => {
           console.log(e);
@@ -79,7 +79,7 @@ export class EmployeeEditComponent {
       this.employeeService.update(this.employee.id, this.employee).subscribe({
         next: (v) => {
           notify('직원 변경이 성공적으로 완료되었습니다.', 'success', 3000);
-          this.onSaved.emit(this.employee);
+          this.onSaved.emit(v);
         },
         error: (e) => {
           console.log(e);
