@@ -2,7 +2,7 @@
 
 <div class="list-container">
   <div class="crud-buttons">
-    <dx-text-box [(value)]="filter" class="search-bar" placeholder="검색">
+    <dx-text-box [(value)]="filter" class="search-bar" placeholder="이름으로 조회" (onEnterKey)="search()">
     </dx-text-box>
     <dx-button
       class="crud-button"
