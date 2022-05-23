@@ -7,6 +7,7 @@ import {Employee} from "./services/employee.interface";
 import notify from "devextreme/ui/notify";
 import {confirm} from "devextreme/ui/dialog";
 import {firstValueFrom} from "rxjs";
+import {DxFormComponent} from "devextreme-angular";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -21,8 +22,9 @@ export class EmployeeComponent {
   popupVisible = false;
   genders = [{code: 'Male', text: '남자'}, {code: 'Female', text: '여자'}];
   searchName = '';
+  maxDate = new Date();
 
-  @ViewChild('grid') grid: any;
+  @ViewChild(DxFormComponent, { static: false }) form!: DxFormComponent;
 
   constructor(private employeeService: EmployeeService) {
     this.employees = new DataSource({
@@ -122,6 +124,10 @@ export class EmployeeComponent {
 
   /** Popup Button Events */
   save = () => {
+    const validationResult = this.form.instance.validate();
+    if (!validationResult.isValid) {
+      return;
+    }
     this.popupVisible = false;
     if (this.isCreateMode()) {
       this.employeeService.create(this.employee).subscribe({

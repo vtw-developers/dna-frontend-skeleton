@@ -77,7 +77,7 @@
   >
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
-    <dx-form id="form" [colCount]="2" [formData]="employee">
+    <dx-form class="edit-form" id="form" [colCount]="2" [formData]="employee" [showValidationSummary]="true">
       <dxi-item *ngIf="isUpdateMode()"
         dataField="id"
         [label]="{ text: 'ID' }"
@@ -87,7 +87,10 @@
         dataField="name"
         [label]="{ text: '이름' }"
         [editorOptions]="{ }"
-      ></dxi-item>
+      >
+        <dxi-validation-rule type="required" message="이름을 입력하세요.">
+        </dxi-validation-rule>
+      </dxi-item>
       <dxi-item
         dataField="gender"
         [label]="{ text: '성별' }"
@@ -99,7 +102,14 @@
         [label]="{ text: '생년월일' }"
         editorType="dxDateBox"
         [editorOptions]="{ displayFormat: 'yyyy/MM/dd' }"
-      ></dxi-item>
+      >
+        <dxi-validation-rule
+          type="range"
+          [max]="maxDate"
+          message="생년월일은 오늘 날짜까지만 입력 가능합니다."
+        >
+        </dxi-validation-rule>
+      </dxi-item>
     </dx-form>
   </div>
 </dx-popup>
