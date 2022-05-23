@@ -73,6 +73,7 @@ export class EmployeeComponent {
         this.employeeService.delete(this.getSelectedEmployeeId()).subscribe({
           next: (v) => {
             notify('직원 삭제가 성공적으로 완료되었습니다.', 'success', 3000);
+            this.grid.instance.clearSelection();
             this.search();
           },
           error: (e) => {
