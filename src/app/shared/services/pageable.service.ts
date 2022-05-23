@@ -23,7 +23,6 @@ export class PageableService {
 
   /** DevExtreme Data Grid 의 LoadOptions 으로부터 JPA Pageable(Page+Sort) 파라미터를 생성한다. */
   getPageable(loadOptions: LoadOptions): Pageable {
-    console.log(loadOptions);
     const size = loadOptions.take;
     const page = loadOptions.skip! / loadOptions.take!;
     const sorts = loadOptions.sort as Array<any>;

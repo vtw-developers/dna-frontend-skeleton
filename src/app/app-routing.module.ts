@@ -8,6 +8,7 @@ import { TasksComponent } from './pages/tasks/tasks.component';
 import {DevExtremeModule, DxDataGridModule, DxFormModule} from 'devextreme-angular';
 import {EmployeeComponent} from "./pages/employee/employee.component";
 import {CommonModule} from "@angular/common";
+import {EmployeeEditComponent} from "./pages/employee/edit/employee-edit.component";
 
 const routes: Routes = [
   {
@@ -64,7 +65,8 @@ const routes: Routes = [
     HomeComponent,
     ProfileComponent,
     TasksComponent,
-    EmployeeComponent
+    EmployeeComponent,
+    EmployeeEditComponent
   ]
 })
 export class AppRoutingModule { }

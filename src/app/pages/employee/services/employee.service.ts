@@ -27,7 +27,6 @@ export class EmployeeService {
   }
 
   create(employee: Employee): Observable<Employee> {
-    console.log(employee);
     return this.http.post<any>(`${URL}`, employee);
   }
 

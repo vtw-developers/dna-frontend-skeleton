@@ -29,7 +29,6 @@
   </div>
 
   <dx-data-grid
-    #grid
     [dataSource]="employees"
     [showBorders]="true"
     [remoteOperations]="true"
@@ -51,58 +50,4 @@
   </dx-data-grid>
 </div>
 
-<dx-popup
-  [width]="500"
-  [height]="280"
-  [showTitle]="true"
-  [title]="isCreateMode() ? '직원 생성' : '직원 변경'"
-  [dragEnabled]="false"
-  [closeOnOutsideClick]="true"
-  [showCloseButton]="false"
-  container=".dx-viewport"
-  [(visible)]="popupVisible"
->
-  <dxi-toolbar-item
-    widget="dxButton"
-    toolbar="bottom"
-    location="before"
-    [options]="{text: '저장', onClick: save}"
-  >
-  </dxi-toolbar-item>
-  <dxi-toolbar-item
-    widget="dxButton"
-    toolbar="bottom"
-    location="before"
-    [options]="{text: '취소', onClick: cancel}"
-  >
-  </dxi-toolbar-item>
-  <div *dxTemplate="let data of 'content'">
-    <dx-form class="edit-form" id="form" [colCount]="2" [formData]="employee" [showValidationSummary]="true">
-      <dxi-item *ngIf="isUpdateMode()"
-        dataField="id"
-        [label]="{ text: 'ID' }"
-        [editorOptions]="{ disabled: true }"
-      ></dxi-item>
-      <dxi-item
-        dataField="name"
-        [label]="{ text: '이름' }"
-        [editorOptions]="{ }"
-      >
-        <dxi-validation-rule type="required" message="이름을 입력하세요.">
-        </dxi-validation-rule>
-      </dxi-item>
-      <dxi-item
-        dataField="gender"
-        [label]="{ text: '성별' }"
-        editorType="dxSelectBox"
-        [editorOptions]="{ items: genders, searchEnabled: true, valueExpr: 'code', displayExpr: 'text' }"
-      ></dxi-item>
-      <dxi-item
-        dataField="birthDate"
-        [label]="{ text: '생년월일' }"
-        editorType="dxDateBox"
-        [editorOptions]="{ displayFormat: 'yyyy-MM-dd' }"
-      ></dxi-item>
-    </dx-form>
-  </div>
-</dx-popup>
+<sample-employee-edit-popup (onSaved)="onSaved($event)"></sample-employee-edit-popup>

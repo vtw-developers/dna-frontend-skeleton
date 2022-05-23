@@ -6,8 +6,8 @@ import {Employee, EmployeeService} from "./services/employee.service";
 import notify from "devextreme/ui/notify";
 import {confirm} from "devextreme/ui/dialog";
 import {firstValueFrom} from "rxjs";
-import {DxFormComponent} from "devextreme-angular";
 import {PageableService} from "../../shared/services/pageable.service";
+import {EmployeeEditComponent} from "./edit/employee-edit.component";
 
 @Component({
   selector: 'sample-employee',
@@ -19,13 +19,9 @@ export class EmployeeComponent {
 
   employees: DataSource;
   selectedEmployeeId!: number;
-  employee!: Employee;
-  editMode!: 'create' | 'update';
-  popupVisible = false;
-  genders = [{code: 'Male', text: '남자'}, {code: 'Female', text: '여자'}];
   filter = '';
 
-  @ViewChild(DxFormComponent, { static: false }) form!: DxFormComponent;
+  @ViewChild(EmployeeEditComponent, {static: false}) editPopup!: EmployeeEditComponent;
 
   constructor(private employeeService: EmployeeService,
               private pageableService: PageableService) {
@@ -42,14 +38,6 @@ export class EmployeeComponent {
         },
       })
     });
-  }
-
-  isCreateMode() {
-    return this.editMode === 'create';
-  }
-
-  isUpdateMode() {
-    return this.editMode === 'update';
   }
 
   updateSelection(e: any) {
@@ -70,23 +58,11 @@ export class EmployeeComponent {
   }
 
   create() {
-    this.editMode = 'create';
-    this.employee = {} as Employee;
-    this.popupVisible = true;
+    this.editPopup.open('create');
   }
 
   update() {
-    this.editMode = 'update';
-    this.employeeService.find(this.selectedEmployeeId).subscribe({
-      next: (v) => {
-        this.employee = v;
-      },
-      error: (e) => {
-        console.log(e);
-        notify('직원 정보를 불러오는데 오류가 발생하였습니다.', 'error', 3000);
-      }
-    });
-    this.popupVisible = true;
+    this.editPopup.open('update', this.selectedEmployeeId);
   }
 
   delete() {
@@ -107,40 +83,10 @@ export class EmployeeComponent {
     });
   }
 
-  /** Popup Button Events */
-  save = () => {
-    const validationResult = this.form.instance.validate();
-    if (!validationResult.isValid) {
-      return;
-    }
-    this.popupVisible = false;
-    if (this.isCreateMode()) {
-      this.employeeService.create(this.employee).subscribe({
-        next: (v) => {
-          notify('직원 생성이 성공적으로 완료되었습니다.', 'success', 3000);
-          this.search();
-        },
-        error: (e) => {
-          console.log(e);
-          notify('직원 생성에 실패하였습니다.', 'error', 3000);
-        }
-      });
-    } else {
-      this.employeeService.update(this.employee.id, this.employee).subscribe({
-        next: (v) => {
-          notify('직원 변경이 성공적으로 완료되었습니다.', 'success', 3000);
-          this.search();
-        },
-        error: (e) => {
-          console.log(e);
-          notify('직원 변경에 실패하였습니다.', 'error', 3000);
-        }
-      });
-    }
-  }
-
-  cancel = () => {
-    this.popupVisible = false;
+  /** Edit Popup Events */
+  onSaved(employee: Employee) {
+    this.filter = '';
+    this.search();
   }
 
 }
