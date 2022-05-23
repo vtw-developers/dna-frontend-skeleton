@@ -1,4 +1,4 @@
-<h2 class="content-block">근무자 목록</h2>
+<h2 class="content-block">직원 목록</h2>
 
 <div class="container">
   <div class="crud-buttons">
@@ -17,11 +17,13 @@
     <dx-button
       class="crud-button"
       text="변경"
+      [disabled]="!selectedEmployeeId"
       (onClick)="update()"
     ></dx-button>
     <dx-button
       class="crud-button"
       text="삭제"
+      [disabled]="!selectedEmployeeId"
       (onClick)="delete()"
     ></dx-button>
   </div>
@@ -33,10 +35,11 @@
     [remoteOperations]="true"
     [hoverStateEnabled]="true"
     [selectedRowKeys]="[]"
+    (onSelectionChanged)="updateSelection($event)"
   >
-    <dxi-column dataField="id" dataType="number" caption="ID"></dxi-column>
+    <dxi-column dataField="id" dataType="number" caption="ID" [width]="100"></dxi-column>
     <dxi-column dataField="name" dataType="string" caption="이름"></dxi-column>
-    <dxi-column dataField="gender" dataType="string" caption="성별" [customizeText]="displayGender"></dxi-column>
+    <dxi-column dataField="gender" dataType="string" caption="성별" [customizeText]="displayGender" [width]="100"></dxi-column>
     <dxi-column dataField="birthDate" dataType="date" caption="생년월일" [format]="{ type: 'yyyy/MM/dd' }"></dxi-column>
     <dxo-selection mode="single"></dxo-selection>
     <dxo-paging [pageSize]="10"></dxo-paging>
@@ -51,7 +54,7 @@
   [width]="500"
   [height]="280"
   [showTitle]="true"
-  [title]="isCreateMode() ? '근무자 생성' : '근무자 변경'"
+  [title]="isCreateMode() ? '직원 생성' : '직원 변경'"
   [dragEnabled]="false"
   [closeOnOutsideClick]="true"
   [showCloseButton]="false"

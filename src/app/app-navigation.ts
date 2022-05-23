@@ -17,7 +17,7 @@ export const navigation = [
         path: '/tasks'
       },
       {
-        text: '근무자 관리',
+        text: '직원 관리',
         path: '/employee'
       }
     ]

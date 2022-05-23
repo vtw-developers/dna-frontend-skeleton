@@ -5,6 +5,8 @@ import CustomStore from "devextreme/data/custom_store";
 import {EmployeeService} from "./services/employee.service";
 import {Employee} from "./services/employee.interface";
 import notify from "devextreme/ui/notify";
+import {confirm} from "devextreme/ui/dialog";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -13,6 +15,7 @@ import notify from "devextreme/ui/notify";
 export class EmployeeComponent {
 
   employees;
+  selectedEmployeeId!: number;
   employee: any;
   editMode: 'create' | 'update' = 'create';
   popupVisible = false;
@@ -43,7 +46,7 @@ export class EmployeeComponent {
 
           params.searchName = this.searchName;
 
-          return this.employeeService.list(params).toPromise().then(data => {
+          return firstValueFrom(this.employeeService.list(params)).then(data => {
             let employees = {} as any;
             employees.totalCount = data.totalElements;
             employees.data = data.content;
@@ -54,16 +57,16 @@ export class EmployeeComponent {
     });
   }
 
-  getSelectedEmployeeId() {
-    return this.grid.instance.getSelectedRowKeys()[0];
-  }
-
   isCreateMode() {
     return this.editMode === 'create';
   }
 
   isUpdateMode() {
     return this.editMode === 'update';
+  }
+
+  updateSelection(e: any) {
+    this.selectedEmployeeId = e.selectedRowKeys[0];
   }
 
   displayGender(e: any) {
@@ -87,55 +90,61 @@ export class EmployeeComponent {
 
   update() {
     this.editMode = 'update';
-    this.employeeService.find(this.getSelectedEmployeeId()).subscribe(
-      (result) => {
-        this.employee = result;
+    this.employeeService.find(this.selectedEmployeeId).subscribe({
+      next: (v) => {
+        this.employee = v;
       },
-      (error) => {
-        console.log(error);
-        notify('근무자 정보를 불러오는데 오류가 발생하였습니다.', 'error', 3000);
+      error: (e) => {
+        console.log(e);
+        notify('직원 정보를 불러오는데 오류가 발생하였습니다.', 'error', 3000);
       }
-    )
+    });
     this.popupVisible = true;
   }
 
   delete() {
-    this.employeeService.delete(this.getSelectedEmployeeId()).subscribe(
-      (result) => {
-        notify('근무자 삭제가 성공적으로 완료되었습니다.', 'success', 3000);
-        this.search();
-      },
-      (error) => {
-        console.log(error);
-        notify('근무자 삭제에 실패하였습니다.', 'error', 3000);
+    const result = confirm('<i>정말로 해당 직원를 삭제하시겠습니까?</i>', '직원 삭제');
+    result.then(dialogResult => {
+      if (dialogResult) {
+        this.employeeService.delete(this.selectedEmployeeId).subscribe({
+          next: (v) => {
+            notify('직원 삭제가 성공적으로 완료되었습니다.', 'success', 3000);
+            this.search();
+          },
+          error: (e) => {
+            console.log(e);
+            notify('직원 삭제에 실패하였습니다.', 'error', 3000);
+          }
+        });
       }
-    )
+    });
   }
 
   /** Popup Button Events */
   save = () => {
     this.popupVisible = false;
     if (this.isCreateMode()) {
-      this.employee.gender = 'Male';
-      this.employeeService.create(this.employee).subscribe(
-        (result) => {
-          notify('근무자 생성이 성공적으로 완료되었습니다.', 'success', 3000);
+      this.employeeService.create(this.employee).subscribe({
+        next: (v) => {
+          notify('직원 생성이 성공적으로 완료되었습니다.', 'success', 3000);
           this.search();
         },
-        (error) => {
-          console.log(error);
-          notify('근무자 생성에 실패하였습니다.', 'error', 3000);
-        });
+        error: (e) => {
+          console.log(e);
+          notify('직원 생성에 실패하였습니다.', 'error', 3000);
+        }
+      });
     } else {
-      this.employeeService.update(this.employee.id, this.employee).subscribe(
-        (result) => {
-          notify('근무자 변경이 성공적으로 완료되었습니다.', 'success', 3000);
+      this.employeeService.update(this.employee.id, this.employee).subscribe({
+        next: (v) => {
+          notify('직원 변경이 성공적으로 완료되었습니다.', 'success', 3000);
           this.search();
         },
-        (error) => {
-          console.log(error);
-          notify('근무자 변경에 실패하였습니다.', 'error', 3000);
-        });
+        error: (e) => {
+          console.log(e);
+          notify('직원 변경에 실패하였습니다.', 'error', 3000);
+        }
+      });
     }
   }
 
