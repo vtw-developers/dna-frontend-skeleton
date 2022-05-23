@@ -2,57 +2,42 @@ import {Component, ViewChild} from '@angular/core';
 import 'devextreme/data/odata/store';
 import DataSource from "devextreme/data/data_source";
 import CustomStore from "devextreme/data/custom_store";
-import {EmployeeService} from "./services/employee.service";
-import {Employee} from "./services/employee.interface";
+import {Employee, EmployeeService} from "./services/employee.service";
 import notify from "devextreme/ui/notify";
 import {confirm} from "devextreme/ui/dialog";
 import {firstValueFrom} from "rxjs";
 import {DxFormComponent} from "devextreme-angular";
+import {PageableService} from "../../shared/services/pageable.service";
 
 @Component({
+  selector: 'sample-employee',
+  providers: [EmployeeService, PageableService],
   templateUrl: 'employee.component.html'
 })
 
 export class EmployeeComponent {
 
-  employees;
+  employees: DataSource;
   selectedEmployeeId!: number;
-  employee: any;
-  editMode: 'create' | 'update' = 'create';
+  employee!: Employee;
+  editMode!: 'create' | 'update';
   popupVisible = false;
   genders = [{code: 'Male', text: '남자'}, {code: 'Female', text: '여자'}];
-  searchName = '';
-  maxDate = new Date();
+  filter = '';
 
   @ViewChild(DxFormComponent, { static: false }) form!: DxFormComponent;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService,
+              private pageableService: PageableService) {
     this.employees = new DataSource({
       store: new CustomStore({
         key: 'id',
         load: (loadOptions) => {
-          const page = loadOptions.skip;
-          const size = loadOptions.take;
-          const sorts = loadOptions.sort as Array<any>;
+          const pageable = this.pageableService.getPageable(loadOptions);
+          pageable.filter = this.filter;
 
-          const params = {page, size} as any;
-
-          if (sorts) {
-            const sort = sorts.pop();
-            const sortColumn = sort.selector;
-            const sortOrder = sort.desc ? 'desc' : 'asc';
-
-            params.sortColumn = sortColumn;
-            params.sortOrder = sortOrder;
-          }
-
-          params.searchName = this.searchName;
-
-          return firstValueFrom(this.employeeService.list(params)).then(data => {
-            let employees = {} as any;
-            employees.totalCount = data.totalElements;
-            employees.data = data.content;
-            return employees;
+          return firstValueFrom(this.employeeService.list(pageable)).then(page => {
+            return this.pageableService.transformPage(page);
           });
         },
       })

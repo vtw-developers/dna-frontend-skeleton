@@ -2,7 +2,7 @@
 
 <div class="list-container">
   <div class="crud-buttons">
-    <dx-text-box [(value)]="searchName" class="search-bar" placeholder="검색">
+    <dx-text-box [(value)]="filter" class="search-bar" placeholder="검색">
     </dx-text-box>
     <dx-button
       class="crud-button"
@@ -40,7 +40,7 @@
     <dxi-column dataField="id" dataType="number" caption="ID" [width]="100"></dxi-column>
     <dxi-column dataField="name" dataType="string" caption="이름"></dxi-column>
     <dxi-column dataField="gender" dataType="string" caption="성별" [customizeText]="displayGender" [width]="100"></dxi-column>
-    <dxi-column dataField="birthDate" dataType="date" caption="생년월일" [format]="{ type: 'yyyy/MM/dd' }"></dxi-column>
+    <dxi-column dataField="birthDate" dataType="date" caption="생년월일" [format]="{ type: 'yyyy-MM-dd' }"></dxi-column>
     <dxo-selection mode="single"></dxo-selection>
     <dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager
@@ -101,15 +101,8 @@
         dataField="birthDate"
         [label]="{ text: '생년월일' }"
         editorType="dxDateBox"
-        [editorOptions]="{ displayFormat: 'yyyy/MM/dd' }"
-      >
-        <dxi-validation-rule
-          type="range"
-          [max]="maxDate"
-          message="생년월일은 오늘 날짜까지만 입력 가능합니다."
-        >
-        </dxi-validation-rule>
-      </dxi-item>
+        [editorOptions]="{ displayFormat: 'yyyy-MM-dd' }"
+      ></dxi-item>
     </dx-form>
   </div>
 </dx-popup>
