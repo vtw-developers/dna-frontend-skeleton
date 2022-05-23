@@ -17,13 +17,13 @@
     <dx-button
       class="crud-button"
       text="변경"
-      [disabled]="!selectedEmployeeId"
+      [disabled]="!getSelectedEmployeeId()"
       (onClick)="update()"
     ></dx-button>
     <dx-button
       class="crud-button"
       text="삭제"
-      [disabled]="!selectedEmployeeId"
+      [disabled]="!getSelectedEmployeeId()"
       (onClick)="delete()"
     ></dx-button>
   </div>
@@ -34,7 +34,6 @@
     [remoteOperations]="true"
     [hoverStateEnabled]="true"
     [selectedRowKeys]="[]"
-    (onSelectionChanged)="updateSelection($event)"
   >
     <dxi-column dataField="id" dataType="number" caption="ID" [width]="100"></dxi-column>
     <dxi-column dataField="name" dataType="string" caption="이름"></dxi-column>

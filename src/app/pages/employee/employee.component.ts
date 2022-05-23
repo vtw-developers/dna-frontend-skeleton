@@ -8,6 +8,7 @@ import {confirm} from "devextreme/ui/dialog";
 import {firstValueFrom} from "rxjs";
 import {PageableService} from "../../shared/services/pageable.service";
 import {EmployeeEditComponent} from "./edit/employee-edit.component";
+import {DxDataGridComponent} from "devextreme-angular";
 
 @Component({
   selector: 'sample-employee',
@@ -18,9 +19,9 @@ import {EmployeeEditComponent} from "./edit/employee-edit.component";
 export class EmployeeComponent {
 
   employees: DataSource;
-  selectedEmployeeId!: number;
   filter = '';
 
+  @ViewChild(DxDataGridComponent, {static: false}) grid!: DxDataGridComponent;
   @ViewChild(EmployeeEditComponent, {static: false}) editPopup!: EmployeeEditComponent;
 
   constructor(private employeeService: EmployeeService,
@@ -40,8 +41,8 @@ export class EmployeeComponent {
     });
   }
 
-  updateSelection(e: any) {
-    this.selectedEmployeeId = e.selectedRowKeys[0];
+  getSelectedEmployeeId(): number {
+    return this.grid?.instance.getSelectedRowKeys()[0];
   }
 
   displayGender(e: any) {
@@ -62,14 +63,14 @@ export class EmployeeComponent {
   }
 
   update() {
-    this.editPopup.open('update', this.selectedEmployeeId);
+    this.editPopup.open('update', this.getSelectedEmployeeId());
   }
 
   delete() {
     const result = confirm('<i>정말로 해당 직원를 삭제하시겠습니까?</i>', '직원 삭제');
     result.then(dialogResult => {
       if (dialogResult) {
-        this.employeeService.delete(this.selectedEmployeeId).subscribe({
+        this.employeeService.delete(this.getSelectedEmployeeId()).subscribe({
           next: (v) => {
             notify('직원 삭제가 성공적으로 완료되었습니다.', 'success', 3000);
             this.search();
@@ -85,7 +86,6 @@ export class EmployeeComponent {
 
   /** Edit Popup Events */
   onSaved(employee: Employee) {
-    this.filter = '';
     this.search();
   }
 
