@@ -1,19 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-.container {
+.list-container {
   padding: 20px;
 }
 
-.crud-buttons {
+.list-container .crud-buttons {
   margin-bottom: 20px;
 }
 
-.crud-button {
+.list-container .crud-button {
   width: 120px;
   margin-right: 20px;
 }
 
-.search-bar {
+.list-container .search-bar {
   float: left;
   margin-right: 20px;
   width: 200px;
+}
+
+.list-container .dx-gridbase-container {
+  padding: 20px 20px 11px 20px;
 }

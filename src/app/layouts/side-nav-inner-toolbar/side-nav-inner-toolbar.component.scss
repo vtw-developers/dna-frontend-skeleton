@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.container {
+.list-container {
   height: 100%;
   flex-direction: column;
   display: flex;
@@ -29,7 +29,7 @@
   :host-context(.screen-x-small) & {
     padding-left: 20px;
   }
-    
+
   :host-context(.dx-theme-generic) & {
     padding-top: 10px;
     padding-bottom: 10px;

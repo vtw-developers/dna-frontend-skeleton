@@ -1,6 +1,6 @@
 <h2 class="content-block">직원 목록</h2>
 
-<div class="container">
+<div class="list-container">
   <div class="crud-buttons">
     <dx-text-box [(value)]="searchName" class="search-bar" placeholder="검색">
     </dx-text-box>
@@ -46,6 +46,7 @@
     <dxo-pager
       [showPageSizeSelector]="true"
       [allowedPageSizes]="[5, 10, 20]"
+      [visible]="true"
     ></dxo-pager>
   </dx-data-grid>
 </div>
