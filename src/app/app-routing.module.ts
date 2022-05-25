@@ -1,15 +1,19 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginFormComponent, ResetPasswordFormComponent, CreateAccountFormComponent, ChangePasswordFormComponent } from './shared/components';
-import { AuthGuardService } from './shared/services';
-import { HomeComponent } from './pages/home/home.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { TasksComponent } from './pages/tasks/tasks.component';
-import {DevExtremeModule, DxDataGridModule, DxFormModule} from 'devextreme-angular';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {
+  ChangePasswordFormComponent,
+  CreateAccountFormComponent,
+  LoginFormComponent,
+  ResetPasswordFormComponent
+} from './shared/components';
+import {AuthGuardService} from './shared/services';
+import {HomeComponent} from './pages/home/home.component';
+import {ProfileComponent} from './pages/profile/profile.component';
+import {TasksComponent} from './pages/tasks/tasks.component';
+import {DevExtremeModule} from 'devextreme-angular';
 import {EmployeeComponent} from "./pages/employee/employee.component";
 import {CommonModule} from "@angular/common";
 import {EmployeeEditComponent} from "./pages/employee/edit/employee-edit.component";
-import {FormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -59,7 +63,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true}), DevExtremeModule, CommonModule, FormsModule],
+  imports: [RouterModule.forRoot(routes, {useHash: true}), DevExtremeModule, CommonModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [
