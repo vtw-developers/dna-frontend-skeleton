@@ -1,6 +1,6 @@
 <dx-popup
   [width]="500"
-  [height]="280"
+  [height]="400"
   [showTitle]="true"
   [title]="isCreateMode() ? '직원 생성' : '직원 변경'"
   [dragEnabled]="false"
@@ -24,32 +24,33 @@
   >
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
-    <dx-form class="edit-form" id="form" [colCount]="2" [formData]="employee" [showValidationSummary]="true">
-      <dxi-item *ngIf="isUpdateMode()"
-                dataField="id"
-                [label]="{ text: 'ID' }"
-                [editorOptions]="{ disabled: true }"
-      ></dxi-item>
-      <dxi-item
-        dataField="name"
-        [label]="{ text: '이름' }"
-        [editorOptions]="{ }"
-      >
-        <dxi-validation-rule type="required" message="이름을 입력하세요.">
-        </dxi-validation-rule>
-      </dxi-item>
-      <dxi-item
-        dataField="gender"
-        [label]="{ text: '성별' }"
-        editorType="dxSelectBox"
-        [editorOptions]="{ items: genders, searchEnabled: true, valueExpr: 'code', displayExpr: 'text' }"
-      ></dxi-item>
-      <dxi-item
-        dataField="birthDate"
-        [label]="{ text: '생년월일' }"
-        editorType="dxDateBox"
-        [editorOptions]="{ displayFormat: 'yyyy-MM-dd' }"
-      ></dxi-item>
-    </dx-form>
+    <div class="dx-fieldset">
+      <div class="dx-fieldset-header">기본정보</div>
+
+      <div class="dx-field" *ngIf="isUpdateMode()">
+        <div class="dx-field-label">ID</div>
+        <div class="dx-field-value-static">{{employee.id}}</div>
+      </div>
+
+      <div class="dx-field">
+        <div class="dx-field-label">이름</div>
+        <dx-text-box class="dx-field-value" [(value)]="employee.name"></dx-text-box>
+      </div>
+
+      <div class="dx-field">
+        <div class="dx-field-label">성별</div>
+        <dx-select-box class="dx-field-value" [(value)]="employee.gender"
+                       [items]="genders" [searchEnabled]="true" valueExpr="code" displayExpr="text"
+        ></dx-select-box>
+      </div>
+
+      <div class="dx-field">
+        <div class="dx-field-label">생년월일</div>
+        <dx-date-box class="dx-field-value" [(value)]="employee.birthDate"
+                     applyValueMode="useButtons" type="date" displayFormat="yyyy-MM-dd"
+        ></dx-date-box>
+      </div>
+
+    </div>
   </div>
 </dx-popup>

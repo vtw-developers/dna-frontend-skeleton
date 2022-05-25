@@ -7,7 +7,7 @@ export interface Employee {
   id: number;
   name: string;
   gender: string;
-  birthDay: Date;
+  birthDate: string | number | Date;
 }
 
 const URL = '/dna/practice/employees';

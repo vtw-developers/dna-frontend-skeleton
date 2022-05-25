@@ -11,7 +11,6 @@ import {Employee, EmployeeService} from "../services/employee.service";
 })
 
 export class EmployeeEditComponent {
-
   employee!: Employee;
   editMode!: 'create' | 'update';
   popupVisible = false;
@@ -59,10 +58,11 @@ export class EmployeeEditComponent {
 
   /** Popup Button Events */
   save = () => {
-    const validationResult = this.form.instance.validate();
-    if (!validationResult.isValid) {
-      return;
-    }
+
+    // const validationResult = this.form.instance.validate();
+    // if (!validationResult.isValid) {
+    //   return;
+    // }
     this.popupVisible = false;
     if (this.isCreateMode()) {
       this.employeeService.create(this.employee).subscribe({
