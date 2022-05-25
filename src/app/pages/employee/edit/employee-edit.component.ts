@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
 import 'devextreme/data/odata/store';
 import notify from "devextreme/ui/notify";
-import {DxFormComponent} from "devextreme-angular";
+import {DxFormComponent, DxValidationGroupComponent} from "devextreme-angular";
 import {Employee, EmployeeService} from "../services/employee.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'sample-employee-edit-popup',
@@ -19,6 +20,8 @@ export class EmployeeEditComponent {
   @Output() onSaved = new EventEmitter<Employee>();
 
   @ViewChild(DxFormComponent, {static: false}) form!: DxFormComponent;
+
+  @ViewChild(DxValidationGroupComponent, {static: false}) validationGroup: DxValidationGroupComponent;
 
   constructor(private employeeService: EmployeeService) {
   }
@@ -57,12 +60,12 @@ export class EmployeeEditComponent {
   }
 
   /** Popup Button Events */
-  save = () => {
+  save = (e) => {
+    const result = this.validationGroup.instance.validate();
+    if (!result.isValid) {
+      return;
+    }
 
-    // const validationResult = this.form.instance.validate();
-    // if (!validationResult.isValid) {
-    //   return;
-    // }
     this.popupVisible = false;
     if (this.isCreateMode()) {
       this.employeeService.create(this.employee).subscribe({
@@ -93,4 +96,8 @@ export class EmployeeEditComponent {
     this.popupVisible = false;
   }
 
+  isValid(dateBox) {
+    console.log(dateBox.isValid)
+    return dateBox.isValid
+  }
 }

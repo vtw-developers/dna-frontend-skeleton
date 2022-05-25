@@ -9,6 +9,7 @@ import {DevExtremeModule, DxDataGridModule, DxFormModule} from 'devextreme-angul
 import {EmployeeComponent} from "./pages/employee/employee.component";
 import {CommonModule} from "@angular/common";
 import {EmployeeEditComponent} from "./pages/employee/edit/employee-edit.component";
+import {FormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -58,7 +59,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true}), DevExtremeModule, CommonModule],
+  imports: [RouterModule.forRoot(routes, {useHash: true}), DevExtremeModule, CommonModule, FormsModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [
