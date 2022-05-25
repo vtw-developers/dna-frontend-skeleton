@@ -96,8 +96,4 @@ export class EmployeeEditComponent {
     this.popupVisible = false;
   }
 
-  isValid(dateBox) {
-    console.log(dateBox.isValid)
-    return dateBox.isValid
-  }
 }
