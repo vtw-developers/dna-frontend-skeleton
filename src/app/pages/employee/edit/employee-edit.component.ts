@@ -11,14 +11,14 @@ import {Employee, EmployeeService} from "../services/employee.service";
 })
 
 export class EmployeeEditComponent {
-  employee!: Employee;
-  editMode!: 'create' | 'update';
+  employee: Employee;
+  editMode: 'create' | 'update';
   popupVisible = false;
   genders = [{code: 'Male', text: '남자'}, {code: 'Female', text: '여자'}];
 
   @Output() onSaved = new EventEmitter<Employee>();
 
-  @ViewChild(DxFormComponent, {static: false}) form!: DxFormComponent;
+  @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent;
 
   @ViewChild(DxValidationGroupComponent, {static: false}) validationGroup: DxValidationGroupComponent;
 
@@ -29,7 +29,7 @@ export class EmployeeEditComponent {
     this.editMode = editMode;
 
     if (this.isUpdateMode()) {
-      this.employeeService.find(employeeId!).subscribe({
+      this.employeeService.find(employeeId).subscribe({
         next: (v) => {
           this.employee = v;
           this.popupVisible = true;

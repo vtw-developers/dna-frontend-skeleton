@@ -21,8 +21,8 @@ export class EmployeeComponent {
   employees: DataSource;
   filter = '';
 
-  @ViewChild(DxDataGridComponent, {static: false}) grid!: DxDataGridComponent;
-  @ViewChild(EmployeeEditComponent, {static: false}) editPopup!: EmployeeEditComponent;
+  @ViewChild(DxDataGridComponent, {static: false}) grid: DxDataGridComponent;
+  @ViewChild(EmployeeEditComponent, {static: false}) editPopup: EmployeeEditComponent;
 
   constructor(private employeeService: EmployeeService,
               private pageableService: PageableService) {
