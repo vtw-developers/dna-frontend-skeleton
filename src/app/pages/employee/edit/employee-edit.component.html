@@ -1,68 +1,67 @@
 <dx-popup
-  [width]="500"
-  [height]="460"
-  [showTitle]="true"
-  [title]="isCreateMode() ? '직원 생성' : '직원 변경'"
-  [dragEnabled]="false"
-  [closeOnOutsideClick]="true"
-  [showCloseButton]="true"
-  container=".dx-viewport"
-  [(visible)]="popupVisible"
+        [width]="'24vw'"
+        [height]="isCreateMode() ? 300 : 340"
+        [showTitle]="true"
+        [title]="isCreateMode() ? '직원 생성' : '직원 변경'"
+        [dragEnabled]="true"
+        [hideOnOutsideClick]="true"
+        [showCloseButton]="true"
+        container=".dx-viewport"
+        [(visible)]="popupVisible"
+        [enableBodyScroll]="false"
 >
-  <dxi-toolbar-item
-    widget="dxButton"
-    toolbar="bottom"
-    location="before"
-    [options]="{text: '저장', onClick: save}"
-  >
-  </dxi-toolbar-item>
-  <dxi-toolbar-item
-    widget="dxButton"
-    toolbar="bottom"
-    location="before"
-    [options]="{text: '취소', onClick: cancel}"
-  >
-  </dxi-toolbar-item>
-  <div class="popup-edit-form" *dxTemplate="let data of 'content'">
-    <dx-validation-group>
-      <div class="dx-fieldset">
-        <div class="dx-fieldset-header">기본정보</div>
+    <div *dxTemplate="let data of 'content'">
+        <dx-validation-group>
+            <form class="flex flex-col" (submit)="save($event)">
+                <div [style.height]="isCreateMode() ? '160px' : '200px'">
+                    <div class="dx-field" *ngIf="isUpdateMode()">
+                        <div class="dx-field-label">ID</div>
+                        <div class="dx-field-value-static">{{employee.id}}</div>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">이름</div>
+                        <dx-text-box class="dx-field-value" [(value)]="employee.name">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="이름을 입력하세요."></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">성별</div>
+                        <dx-select-box class="dx-field-value"
+                                       name="gender" [(value)]="employee.gender"
+                                       [items]="genders" [searchEnabled]="true" valueExpr="code" displayExpr="text"
+                        ></dx-select-box>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">생년월일</div>
+                        <dx-date-box class="dx-field-value" [(value)]="employee.birthDate"
+                                     displayFormat="yyyy-MM-dd"
+                                     dateSerializationFormat="yyyy-MM-dd"
+                                     invalidDateMessage="날짜를 올바른 형식으로 입력하세요: yyyy-MM-dd">
+                            <dx-validator>
+                            </dx-validator>
+                        </dx-date-box>
+                    </div>
+                    <dx-validation-summary class="mt-2"></dx-validation-summary>
+                </div>
 
-        <div class="dx-field" *ngIf="isUpdateMode()">
-          <div class="dx-field-label">ID</div>
-          <div class="dx-field-value-static">{{employee.id}}</div>
-        </div>
-
-        <div class="dx-field">
-          <div class="dx-field-label">이름</div>
-          <dx-text-box class="dx-field-value" [(value)]="employee.name">
-            <dx-validator>
-              <dxi-validation-rule type="required" message="이름을 입력하세요."></dxi-validation-rule>
-            </dx-validator>
-          </dx-text-box>
-        </div>
-
-        <div class="dx-field">
-          <div class="dx-field-label">성별</div>
-          <dx-select-box class="dx-field-value"
-                         name="gender" [(value)]="employee.gender"
-                         [items]="genders" [searchEnabled]="true" valueExpr="code" displayExpr="text"
-          ></dx-select-box>
-        </div>
-
-        <div class="dx-field">
-          <div class="dx-field-label">생년월일</div>
-          <dx-date-box class="dx-field-value" [(value)]="employee.birthDate"
-                       displayFormat="yyyy-MM-dd" invalidDateMessage="날짜를 올바른 형식으로 입력하세요: yyyy-MM-dd">
-            <dx-validator>
-            </dx-validator>
-          </dx-date-box>
-        </div>
-
-        <dx-validation-summary></dx-validation-summary>
-
-      </div>
-    </dx-validation-group>
-  </div>
+                <div class="popup-buttons">
+                    <dx-button
+                            [text]="isCreateMode() ? '생성' : '변경'"
+                            [width]="100"
+                            [useSubmitBehavior]="true"
+                    >
+                    </dx-button>
+                    <dx-button
+                            [text]="'취소'"
+                            [width]="100"
+                            (onClick)="close()"
+                    >
+                    </dx-button>
+                </div>
+            </form>
+        </dx-validation-group>
+    </div>
 
 </dx-popup>

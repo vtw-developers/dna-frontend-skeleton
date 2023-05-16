@@ -1,4 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "themes/generated/theme.base.css";
+
+body, .dx-widget {
+  font-family: "Roboto", "Noto Sans KR", "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
 .list-container {
   padding: 20px;
 }
@@ -25,3 +35,32 @@
 .popup-edit-form .dx-validationsummary {
   margin-top: 20px;
 }
+
+.popup-buttons {
+  @apply mt-4;
+  @apply space-x-2;
+  @apply flex justify-end
+}
+
+.dx-popup-title {
+  padding: 10px;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  white-space: normal;
+  position: relative;
+  min-height: 28px;
+  border-bottom: 1px solid #ddd;
+  background: #337ab7;
+  color: white;
+}
+
+.dx-popup-title .dx-button-mode-text .dx-icon {
+  color: white;
+}
+
+.dx-popup-title.dx-toolbar .dx-toolbar-label {
+  font-size: 16px;
+}
+

@@ -1,5 +1,5 @@
 {
-  "/dna/practice": {
+  "/dna/example": {
     "target": "http://localhost:8090",
     "secure": false
   }
